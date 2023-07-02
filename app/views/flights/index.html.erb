@@ -1,0 +1,13 @@
+<h1>Choose your flight</h1><br>
+<%= form_tag flights_path, method: :get do %>
+  <%= label_tag "Departure airport" %>
+  <%= select_tag "departure_airport_id", options_from_collection_for_select(Airport.all, "id", "code") %><br>
+  <%= label_tag "Arrival airport" %>
+  <%= select_tag "arrival_airport_id", options_from_collection_for_select(Airport.all, "id", "code") %><br>
+  <%= label_tag "Number of passengers" %>
+  <%= select_tag "num_passengers", options_for_select([1, 2, 3, 4]) %><br>
+  <%= label_tag "Departure date" %>
+  <%= text_field_tag "departure_date", nil, class: "datepicker" %> <br>
+
+  <%= submit_tag "Search", name: nil %>
+<% end %>
