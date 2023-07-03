@@ -1,13 +1,13 @@
 <h1>Choose your flight</h1><br>
-<%= form_tag flights_path, method: :get do %>
-  <%= label_tag "Departure airport" %>
-  <%= select_tag "departure_airport_id", options_from_collection_for_select(Airport.all, "id", "code") %><br>
-  <%= label_tag "Arrival airport" %>
-  <%= select_tag "arrival_airport_id", options_from_collection_for_select(Airport.all, "id", "code") %><br>
-  <%= label_tag "Number of passengers" %>
-  <%= select_tag "num_passengers", options_for_select([1, 2, 3, 4]) %><br>
-  <%= label_tag "Departure date" %>
-  <%= text_field_tag "departure_date", nil, class: "datepicker" %> <br>
+<%= form_with(model: @flight, url: flights_path, method: :get) do |form| %>
+  <%= form.label :departure_airport_id, "Departure airport" %>
+  <%= form.select :departure_airport_id, options_from_collection_for_select(Airport.all, "id", "code"), prompt: "Select departure airport" %><br>
+  <%= form.label :arrival_airport_id, "Arrival airport" %>
+  <%= form.select :arrival_airport_id, options_from_collection_for_select(Airport.all, "id", "code"), prompt: "Select arrival airport" %><br>
+  <%= form.label :num_passengers, "Number of passengers" %>
+  <%= form.select :num_passengers, options_for_select([1, 2, 3, 4]), prompt: "Select number of passengers" %><br>
+  <%= form.label :departure_date, "Departure date" %>
+  <%= form.select :departure_date, options_for_select(@available_dates.map { |date| [date, date] }), prompt: "Select departure date" %> <br>
 
-  <%= submit_tag "Search", name: nil %>
+  <%= form.submit "Search" %>
 <% end %>
