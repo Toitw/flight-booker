@@ -11,3 +11,25 @@
 
   <%= form.submit "Search" %>
 <% end %>
+
+<h1>Flights</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Departure airport</th>
+      <th>Arrival airport</th>
+      <th>Departure time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @flights.each do |flight| %>
+      <tr>
+        <td><%= flight.departure_airport.code %></td>
+        <td><%= flight.arrival_airport.code %></td>
+        <td><%= flight.start.strftime("%m/%d/%Y %I:%M %p") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
