@@ -34,10 +34,14 @@ available_dates = []
 departure_airports.each do |departure_airport|
   Airport.where.not(id: departure_airport.id).limit(5).each do |arrival_airport| # Select a smaller number of arrival airports excluding the departure airport
     (start_date..end_date).each do |date|
-      departure_time = DateTime.new(date.year, date.month, date.day, rand(0..23), rand(0..59))
+      num_flights_per_day = rand(2..3)
+      num_flights_per_day.times do
+        departure_time = DateTime.new(date.year, date.month, date.day, rand(0..23), rand(0..59))
 
-      flight = Flight.create(departure_airport: departure_airport, arrival_airport: arrival_airport, start: departure_time)
-      available_dates << flight.start.to_date unless available_dates.include?(flight.start.to_date)
+
+        flight = Flight.create(departure_airport: departure_airport, arrival_airport: arrival_airport, start: departure_time)
+        available_dates << flight.start.to_date unless available_dates.include?(flight.start.to_date)
+      end
     end
   end
 end
