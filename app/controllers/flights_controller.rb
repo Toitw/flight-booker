@@ -1,11 +1,21 @@
 class FlightsController < ApplicationController
     def index
-      @flights = Flight.all
       @available_dates = Flight.pluck(:start).map(&:to_date).uniq
-      if params[:departure_date]
-        @flights = @flights.where(start: params[:departure_date].to_date.beginning_of_day..params[:departure_date].to_date.end_of_day)
+  
+      if params[:flight].present?
+        departure_airport_id = params[:flight][:departure_airport_id]
+        arrival_airport_id = params[:flight][:arrival_airport_id]
+  
+        if departure_airport_id.present? && arrival_airport_id.present?
+          @available_flights = Flight.where(departure_airport_id: departure_airport_id, arrival_airport_id: arrival_airport_id)
+        else
+          @available_flights = []
+        end
+      else
+        @available_flights = []
       end
     end
   end
+  
 
 

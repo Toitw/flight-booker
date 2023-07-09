@@ -1,35 +1,29 @@
 <h1>Choose your flight</h1><br>
-<%= form_with(model: @flight, url: flights_path, method: :get) do |form| %>
-  <%= form.label :departure_airport_id, "Departure airport" %>
-  <%= form.select :departure_airport_id, options_from_collection_for_select(Airport.all, "id", "code"), prompt: "Select departure airport" %><br>
-  <%= form.label :arrival_airport_id, "Arrival airport" %>
-  <%= form.select :arrival_airport_id, options_from_collection_for_select(Airport.all, "id", "code"), prompt: "Select arrival airport" %><br>
-  <%= form.label :num_passengers, "Number of passengers" %>
-  <%= form.select :num_passengers, options_for_select([1, 2, 3, 4]), prompt: "Select number of passengers" %><br>
-  <%= form.label :departure_date, "Departure date" %>
-  <%= form.select :departure_date, options_for_select(@available_dates.map { |date| [date, date] }), prompt: "Select departure date" %> <br>
+<%= form_tag flights_path, method: :get do %>
+  <%= label_tag :departure_airport_id, "Departure airport" %>
+  <%= select_tag "flight[departure_airport_id]", options_from_collection_for_select(Airport.all, "id", "code"), prompt: "Select departure airport" %><br>
+  <%= label_tag :arrival_airport_id, "Arrival airport" %>
+  <%= select_tag "flight[arrival_airport_id]", options_from_collection_for_select(Airport.all, "id", "code"), prompt: "Select arrival airport" %><br>
+  <%= label_tag :num_passengers, "Number of passengers" %>
+  <%= select_tag "flight[num_passengers]", options_for_select([1, 2, 3, 4]), prompt: "Select number of passengers" %><br>
+  <%= label_tag :departure_date, "Departure date" %>
+  <%= select_tag "flight[departure_date]", options_for_select(@available_dates.map { |date| [date, date] }), prompt: "Select departure date" %> <br>
 
-  <%= form.submit "Search" %>
+  <%= submit_tag "Search" %>
 <% end %>
 
-<h1>Flights</h1>
-<table>
-  <thead>
-    <tr>
-      <th>Departure airport</th>
-      <th>Arrival airport</th>
-      <th>Departure time</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @flights.each do |flight| %>
-      <tr>
-        <td><%= flight.departure_airport.code %></td>
-        <td><%= flight.arrival_airport.code %></td>
-        <td><%= flight.start.strftime("%m/%d/%Y %I:%M %p") %></td>
-      </tr>
+<h2>Flight Results</h2>
+<% if @available_flights.any? %>
+  <ul>
+    <% @available_flights.each do |flight| %>
+      <li><%= flight.departure_airport.code %> - <%= flight.arrival_airport.code %> (Departure Time: <%= flight.start.strftime("%m/%d/%Y %I:%M %p") %>)</li>
     <% end %>
-  </tbody>
-</table>
+  </ul>
+<% else %>
+  <p>No flights available.</p>
+<% end %>
+
+
+
 
 
