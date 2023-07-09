@@ -14,11 +14,10 @@
 
 <h2>Flight Results</h2>
 <% if @available_flights.any? %>
-  <ul>
-    <% @available_flights.each do |flight| %>
-      <li><%= flight.departure_airport.code %> - <%= flight.arrival_airport.code %> (Departure Time: <%= flight.start.strftime("%m/%d/%Y %I:%M %p") %>)</li>
-    <% end %>
-  </ul>
+  <% @available_flights.each do |flight| %>
+    <%= radio_button_tag "selected_flight_id", flight.id %>
+    <%= flight.departure_airport.code %> - <%= flight.arrival_airport.code %> (Departure Time: <%= flight.start.strftime("%m/%d/%Y %I:%M %p") %>)<br>
+  <% end %> <br>
 <% else %>
   <p>No flights available.</p>
 <% end %>
