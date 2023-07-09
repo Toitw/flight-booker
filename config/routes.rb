@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   resources :passengers
 
   root "flights#index"
+  get "bookings/:id", to: "bookings#show"
 
 end

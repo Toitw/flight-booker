@@ -15,6 +15,7 @@ class BookingsController < ApplicationController
         redirect_to booking_path(@booking)
       else
         # Handle validation errors
+        puts @booking.errors.full_messages
         render :new
       end
     end
@@ -26,7 +27,7 @@ class BookingsController < ApplicationController
     private
   
     def booking_params
-      params.require(:booking).permit(:flight_id, passengers_attributes: [:name, :email])
+      params.require(:booking).permit(:flight_id, :num_passengers, passengers_attributes: [:name, :email])
     end
   end
   

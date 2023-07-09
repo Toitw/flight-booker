@@ -5,6 +5,7 @@
 <p>Arrival Airport: <%= @flight.arrival_airport.code %></p>
 
 <%= form_with(model: @booking, url: bookings_path) do |form| %>
+    <%= form.hidden_field :num_passengers, value: @num_passengers %>
     <% @booking.passengers.each_with_index do |passenger, index| %>
       <h3>Passenger <%= index + 1 %></h3>
       <%= form.fields_for :passengers, passenger do |passenger_fields| %>
@@ -15,8 +16,9 @@
         <%= passenger_fields.email_field :email %><br>
       <% end %>
     <% end %>
-  
     <%= form.hidden_field :flight_id, value: @flight.id %>
     <%= form.submit "Confirm Booking" %>
 <% end %>
+  
+  
   
