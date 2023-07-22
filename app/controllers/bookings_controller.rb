@@ -7,16 +7,18 @@ class BookingsController < ApplicationController
     end
   
     def create
-      @booking = Booking.new(booking_params)
-      @flight = Flight.find(params[:booking][:flight_id])
-  
-      if @booking.save
-        # Successful booking creation logic
-        redirect_to booking_path(@booking)
-      else
-        # Handle validation errors
-        puts @booking.errors.full_messages
-        render :new
+      respond_to do |format|  
+        @booking = Booking.new(booking_params)
+        @flight = Flight.find(params[:booking][:flight_id])
+
+          if @booking.save
+            PassengerMailer.with(booking: @booking).welcome_email.deliver_later
+            format.html { redirect_to booking_path(@booking), notice: 'Booking was successfully created.' }
+            format.json { render :show, status: :created, location: @booking }
+          else
+            format.html { render action: 'new' }
+            format.json { render json: @booking.errors, status: :unprocessable_entity }
+          end
       end
     end
 
@@ -29,5 +31,5 @@ class BookingsController < ApplicationController
     def booking_params
       params.require(:booking).permit(:flight_id, :num_passengers, passengers_attributes: [:name, :email])
     end
-  end
+end
   
