@@ -12,12 +12,14 @@ class BookingsController < ApplicationController
         @flight = Flight.find(params[:booking][:flight_id])
 
           if @booking.save
-            PassengerMailer.with(booking: @booking).welcome_email.deliver_later
-            format.html { redirect_to booking_path(@booking), notice: 'Booking was successfully created.' }
-            format.json { render :show, status: :created, location: @booking }
+            @booking.passengers.each do |passenger|
+              PassengerMailer.with(passenger: passenger).welcome_email.deliver_later
+              format.html { redirect_to booking_path(@booking), notice: 'Booking was successfully created.' }
+              format.json { render :show, status: :created, location: @booking }
+            end
           else
-            format.html { render action: 'new' }
-            format.json { render json: @booking.errors, status: :unprocessable_entity }
+              format.html { render action: 'new' }
+              format.json { render json: @booking.errors, status: :unprocessable_entity }
           end
       end
     end
